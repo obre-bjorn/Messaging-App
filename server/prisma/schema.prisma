@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+
+model User {
+  id Int @unique @default(autoincrement())
+  username String @unique
+  email String @unique
+  password String 
+  bio String?
+  status String?
+  profile_picture String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sentMessages Message[] @relation("Sender")
+  recievedMessages Message[] @relation("Reciever")
+  friendships Friendship[] @relation("FriendshipUser1")
+  groupChats GropChatMember[]
+}
+
+
+model Message{
+  id Int @unique
+  senderId Int 
+  recieverId Int
+  content String
+  sender User @relation("Sender", fields:[senderId],references: [id])
+  reciever User @relation("Reciever", fields: [recieverId], references: [id])
+  isRead Boolean @default(false)
+}
+
+model Friendship{
+  id Int @unique @default(autoincrement())
+  userId1 Int
+  userId2 Int
+  status String @map("") 
+  createdAt DateTime @default(now())
+  user1 User @relation("FriendshipUser1", fields: [userId1], references: [id])
+  user2 User @relation("FriendshipUser2", fields: [userId2], references: [id])
+}
+
+
+model GroupChat {
+  id Int @unique @default(autoincrement())
+  name String
+  createdBy Int
+  createdAt DateTime @default(now())
+  messages Message[]
+  members GropChatMember[]
+}
+
+
+model GropChatMember {
+  id Int @id @default(autoincrement())
+  groupId Int
+  userId Int
+  role String
+  joinedAt DateTime @default(now())
+  group GroupChat @relation(fields: [groupId], references: [id])
+  user User @relation(fields: [userId],references: [id])
+}
