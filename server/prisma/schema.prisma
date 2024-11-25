@@ -13,63 +13,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
-
 model User {
-  id Int @unique @default(autoincrement())
-  username String @unique
-  email String @unique
-  password String 
-  bio String?
-  status String?
-  profile_picture String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  sentMessages Message[] @relation("Sender")
-  recievedMessages Message[] @relation("Reciever")
-  friendships Friendship[] @relation("FriendshipUser1")
-  groupChats GropChatMember[]
+  id               Int              @unique @default(autoincrement())
+  username         String           @unique
+  email            String           @unique
+  password         String
+  bio              String?
+  status           String?
+  profile_picture  String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  sentMessages     Message[]        @relation("Sender")
+  recievedMessages Message[]        @relation("Reciever")
+  friendships      Friendship[]     @relation("FriendshipUser1")
+  groupChats       GropChatMember[]
+
+  friendship2 Friendship[] @relation("FriendshipUser2")
 }
 
-
-model Message{
-  id Int @unique
-  senderId Int 
+model Message {
+  id         Int     @unique
+  senderId   Int
   recieverId Int
-  content String
-  sender User @relation("Sender", fields:[senderId],references: [id])
-  reciever User @relation("Reciever", fields: [recieverId], references: [id])
-  isRead Boolean @default(false)
+  groupId    Int?
+  content    String
+  sender     User    @relation("Sender", fields: [senderId], references: [id])
+  reciever   User    @relation("Reciever", fields: [recieverId], references: [id])
+  isRead     Boolean @default(false)
+
+  group GroupChat? @relation(fields: [groupId], references: [id])
 }
 
-model Friendship{
-  id Int @unique @default(autoincrement())
-  userId1 Int
-  userId2 Int
-  status String @map("") 
+model Friendship {
+  id        Int      @unique @default(autoincrement())
+  userId1   Int
+  userId2   Int
+  status    String   @map("")
   createdAt DateTime @default(now())
-  user1 User @relation("FriendshipUser1", fields: [userId1], references: [id])
-  user2 User @relation("FriendshipUser2", fields: [userId2], references: [id])
+  user1     User     @relation("FriendshipUser1", fields: [userId1], references: [id])
+  user2     User     @relation("FriendshipUser2", fields: [userId2], references: [id])
 }
-
 
 model GroupChat {
-  id Int @unique @default(autoincrement())
-  name String
+  id        Int              @unique @default(autoincrement())
+  name      String
   createdBy Int
-  createdAt DateTime @default(now())
-  messages Message[]
-  members GropChatMember[]
+  createdAt DateTime         @default(now())
+  messages  Message[]
+  members   GropChatMember[]
 }
 
-
 model GropChatMember {
-  id Int @id @default(autoincrement())
-  groupId Int
-  userId Int
-  role String
-  joinedAt DateTime @default(now())
-  group GroupChat @relation(fields: [groupId], references: [id])
-  user User @relation(fields: [userId],references: [id])
+  id       Int       @id @default(autoincrement())
+  groupId  Int
+  userId   Int
+  role     String
+  joinedAt DateTime  @default(now())
+  group    GroupChat @relation(fields: [groupId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
 }
