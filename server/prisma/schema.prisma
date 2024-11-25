@@ -26,19 +26,19 @@ model User {
   sentMessages     Message[]        @relation("Sender")
   recievedMessages Message[]        @relation("Reciever")
   friendships      Friendship[]     @relation("FriendshipUser1")
-  groupChats       GropChatMember[]
-
   friendship2 Friendship[] @relation("FriendshipUser2")
+
+  groupChats       GropChatMember[]
 }
 
 model Message {
   id         Int     @unique
   senderId   Int
-  recieverId Int
+  recieverId Int?
   groupId    Int?
   content    String
   sender     User    @relation("Sender", fields: [senderId], references: [id])
-  reciever   User    @relation("Reciever", fields: [recieverId], references: [id])
+  reciever   User?    @relation("Reciever", fields: [recieverId], references: [id])
   isRead     Boolean @default(false)
 
   group GroupChat? @relation(fields: [groupId], references: [id])
@@ -48,7 +48,7 @@ model Friendship {
   id        Int      @unique @default(autoincrement())
   userId1   Int
   userId2   Int
-  status    String   @map("")
+  status    String  
   createdAt DateTime @default(now())
   user1     User     @relation("FriendshipUser1", fields: [userId1], references: [id])
   user2     User     @relation("FriendshipUser2", fields: [userId2], references: [id])
