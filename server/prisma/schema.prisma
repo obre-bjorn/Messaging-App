@@ -41,7 +41,7 @@ model Message {
   reciever   User?    @relation("Reciever", fields: [recieverId], references: [id])
   isRead     Boolean @default(false)
 
-  group GroupChat? @relation(fields: [groupId], references: [id])
+  group GroupChat? @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }
 
 model Friendship {
@@ -59,8 +59,8 @@ model GroupChat {
   name      String
   createdBy Int
   createdAt DateTime         @default(now())
-  messages  Message[]
-  members   GropChatMember[]
+  messages  Message[]        
+  members   GropChatMember[] 
 }
 
 model GropChatMember {
