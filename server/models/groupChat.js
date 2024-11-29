@@ -49,6 +49,21 @@ async function addMemberToGroup(groupId, userId,role="member"){
 
 async function removeGroupMember(groupId,userId) {
     
+
+    try {
+
+        const removedMember = await prisma.gropChatMember.delete({
+            where : {
+                userId: userId
+            }
+        })
+
+
+        return removedMember
+        
+    } catch (error) {
+        console.log("Error removing user," + userId, error)
+    }
     
 }
 
@@ -90,4 +105,9 @@ async function deleteGroupChat (groupId) {
 
 } 
 
-module.exports ={}
+module.exports ={
+    addMemberToGroup,
+    createGroupChat,
+    deleteGroupChat,
+    removeGroupMember
+}
