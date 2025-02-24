@@ -55,7 +55,7 @@ async function getUsersWithConversation(userId) {
             if(message.recieverId !== userId) userIds.add(message.recieverId)
         })
 
-        
+        return  
 
     } catch (error) {
 
@@ -70,5 +70,7 @@ async function getUsersWithConversation(userId) {
 
 
 module.exports = {
+    sendMessage,
+    getUsersWithConversation
 
 }

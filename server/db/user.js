@@ -27,13 +27,41 @@ async function createNewUser (username,email,password,) {
 }
 
 
-async function findUserByUsername(username) {
+async function findUserByUsernameOrEmail(userIdentifer) {
 
     try {
         
         const user = await prisma.user.findUnique({
             where: {
-                username: username
+
+                OR : [
+                    {username: userIdentifer},
+                    {email: userIdentifer}
+
+                ]
+            }
+
+        })
+
+
+        return user
+
+    } catch (error) {
+        console.log("Error finding user: ", error)
+        return error
+    }
+
+
+}
+
+
+async function findUserById(userId) {
+
+    try {
+        
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
             }
         })
 
@@ -80,6 +108,7 @@ async function updateUser(id,bio =null, pfp_url= null){
 
 module.exports = { 
     createNewUser,
-    findUserByUsername,
+    findUserByUsernameOrEmail,
+    findUserById,
     updateUser
 }
