@@ -7,10 +7,11 @@ const { generateToken} = require('../utils/jwtUtils')
 
 const userRegister = async (req,res) => {
 
+    const {username,email,password} = req.body
     
     try {
         
-        const existingUser = await userQueries.findUserByUsernameOrEmail('username')
+        const existingUser = await userQueries.findUserByUsernameOrEmail(username)
         
         if(existingUser) {
             
@@ -18,10 +19,9 @@ const userRegister = async (req,res) => {
             
         }
         
-        const {username,email,password} = req.body
 
 
-        const hashedPassword = bcrypt.hash(password,10)
+        const hashedPassword = await bcrypt.hash(password,10)
 
         const newUser = await userQueries.createNewUser(username, email, hashedPassword)
 

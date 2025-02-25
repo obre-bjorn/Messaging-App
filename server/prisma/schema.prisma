@@ -28,7 +28,7 @@ model User {
   friendships      Friendship[]     @relation("FriendshipUser1")
   friendship2 Friendship[] @relation("FriendshipUser2")
 
-  groupChats       GropChatMember[]
+  groupChats       GroupChatMember[]
 }
 
 model Message {
@@ -60,10 +60,10 @@ model GroupChat {
   createdBy Int
   createdAt DateTime         @default(now())
   messages  Message[]        
-  members   GropChatMember[] 
+  members   GroupChatMember[] 
 }
 
-model GropChatMember {
+model GroupChatMember {
   id       Int       @id @default(autoincrement())
   groupId  Int
   userId   Int

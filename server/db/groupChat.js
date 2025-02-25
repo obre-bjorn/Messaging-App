@@ -17,8 +17,10 @@ async function createGroupChat(groupName,createdBy) {
     } 
     
     catch (error) {
+
         console.log("Error creating group: ", error)
         return error
+
     }
     
 }
@@ -29,7 +31,7 @@ async function addMemberToGroup(groupId, userId,role="member"){
     
     try {
 
-        const member = await prisma.gropChatMember.create({
+        const member = await prisma.groupChatMember.create({
             data : {
                 id: groupId,
                 role: role,
@@ -49,20 +51,20 @@ async function addMemberToGroup(groupId, userId,role="member"){
 
 async function removeGroupMember(groupId,userId) {
     
-
     try {
 
-        const removedMember = await prisma.gropChatMember.delete({
+        const removedMember = await prisma.groupChatMember.delete({
             where : {
                 userId: userId
             }
         })
 
-
         return removedMember
         
     } catch (error) {
+
         console.log("Error removing user," + userId, error)
+        
     }
     
 }

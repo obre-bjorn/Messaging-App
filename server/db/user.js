@@ -31,7 +31,7 @@ async function findUserByUsernameOrEmail(userIdentifer) {
 
     try {
         
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
 
                 OR : [
@@ -48,7 +48,7 @@ async function findUserByUsernameOrEmail(userIdentifer) {
 
     } catch (error) {
         console.log("Error finding user: ", error)
-        return error
+        throw new Error("Failed to register user")
     }
 
 
