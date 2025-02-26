@@ -1,15 +1,15 @@
 const prisma = require('../utils/prismaClient')
 
 
-async function addFriend(userId1,userId2,status = "pending") {
+async function addFriend(userId,friendId,status = "pending") {
 
 
     try {
         
         const friendship = await prisma.friendship.create({
             data : { 
-                userId11: userId1,
-                userId2 : userId2,
+                userId1: userId,
+                userId2 : friendId,
                 status: status
             }
         })
@@ -20,13 +20,17 @@ async function addFriend(userId1,userId2,status = "pending") {
     catch (error) {
         
         console.error("Error adding friend: ", error)
-        return error
+        throw new Error("Error sending friend request")
 
     }
 
 }
 
-async function updateFriendshipStatus(id,status) {
+
+
+
+// Check if funcition valid
+async function updateFriendshipStatus(friendId,status) {
 
     try {
         
@@ -39,16 +43,22 @@ async function updateFriendshipStatus(id,status) {
             }    
         })
 
+        return updatedfriendship
+
     } 
     
     catch (error) {
+        
         console.log("Error Updating friendship: ", error)
-        return error
+        throw new Error("Error accepting request")
+
     }
 
 }
 
-async function getUserFriendships(userId) {
+
+
+async function getUserFriends(userId) {
 
     try {
 
@@ -64,9 +74,36 @@ async function getUserFriendships(userId) {
     } 
     
     catch (error) {
-        console.log("Error getting friendships: ", error)
-        return error
+
+        console.log(error)
+        throw new Error("Error getting friends")
+
     }
+}
+
+
+const findFriendship = async (user,friendId) => {
+
+    try {
+        
+    } catch (error) {
+
+        console.log()
+        
+    }
+
+
+
+    
+}
+
+
+
+const getFriendDetails = async () => {
+
+
+
+    
 }
 
 
@@ -74,5 +111,7 @@ async function getUserFriendships(userId) {
 module.exports = {
     addFriend,
     updateFriendshipStatus,
-    getUserFriendships
+    getUserFriends,
+    getFriendDetails,
+    findFriendship,
 }

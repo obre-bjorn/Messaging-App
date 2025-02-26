@@ -45,8 +45,6 @@ const userRegister = async (req,res) => {
         })
     }
 
-
-
 }
 
 const userLogin = async (req,res) => {
@@ -97,8 +95,6 @@ const userLogin = async (req,res) => {
         return res.status(500).json({msg: "Something went wrong"})
 
     }
-
-
 
 }
 
