@@ -1,8 +1,9 @@
 const prisma = require('../utils/prismaClient')
 
 
-async function addFriend(userId,friendId,status = "pending") {
 
+
+async function addFriend(userId,friendId,status = "pending") {
 
     try {
         
@@ -29,7 +30,7 @@ async function addFriend(userId,friendId,status = "pending") {
 
 
 
-// Check if funcition valid
+// Check if function valid
 async function updateFriendshipStatus(friendId,status) {
 
     try {
@@ -82,28 +83,39 @@ async function getUserFriends(userId) {
 }
 
 
-const findFriendship = async (user,friendId) => {
 
-    try {
-        
-    } catch (error) {
+const getFriendDetails = async () => {
 
-        console.log()
-        
-    }
-
-
-
-    
 }
 
 
 
-const getFriendDetails = async () => {
+const findFriendship = async (userId, friendId) => {
 
 
+    try {
+        
+        
+        const friendship = await prisma.friendship.findFirst(
+            {
+                where: {
+                    OR:[
+                        {friendId : friendId, userId: userId},
+                        {userId : friendId, friendId : userId}
+                    ]
+                }
+            }
+        )
+        
+        return friendship
 
-    
+    } catch (error) {
+
+        console.log(error)
+        throw new Error('Error getting friendship')
+        
+    }
+
 }
 
 

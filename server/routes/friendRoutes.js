@@ -8,8 +8,10 @@ const friendshipController = require('../controllers/friendshipController')
 
 const router = express.Router()
 
+// Authenticates each route 
+router.use(authenticateJwt)
 
-router.get('/addfriend',authenticateJwt, friendshipController.sendFriendRequest)
-router.post('/updatefriend', authenticateJwt,friendshipController.acceptFriendRequest)
-router.post('allfriends', authenticateJwt, friendshipController.getAllFriends)
+router.post('/addfriend', friendshipController.sendFriendRequest)
+router.post('/acceptfriend', friendshipController.acceptFriendRequest)
+router.get('/allfriends', friendshipController.getAllFriends)
 // router.get()

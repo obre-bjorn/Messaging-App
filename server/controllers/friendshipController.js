@@ -1,5 +1,6 @@
 const friendshipQueries = require('../db/friendship')
 
+
 //! Implement to check if a request exists in the dbUtitlty and in the conroller
 
 const sendFriendRequest = async (req,res) => {
@@ -30,7 +31,6 @@ const sendFriendRequest = async (req,res) => {
 
 
         const friend = await friendshipQueries.addFriend(userId, friendId)
-    
         return res.status(201).json({msg:"Sent friend request", friend: friend})
 
         
@@ -45,6 +45,7 @@ const sendFriendRequest = async (req,res) => {
 } 
 
 
+
 const acceptFriendRequest = async (req,res) => {
 
     
@@ -57,6 +58,7 @@ const acceptFriendRequest = async (req,res) => {
         if(!friendId){
 
             return res.status(401).json({msg: "Provide friend id"})
+
         }
 
 
@@ -65,8 +67,6 @@ const acceptFriendRequest = async (req,res) => {
             return res.status(401).json({msg: "Cannot accepts self request"})
 
         }
-
-
 
         const friend = await friendshipQueries.updateFriendshipStatus(friendId, "accepted")
         return res.status(200).json({msg: "Friendship approved", friend: friend})
@@ -79,12 +79,12 @@ const acceptFriendRequest = async (req,res) => {
 
     }
 
-
-
 }
 
 
+
 const getAllFriends = async (req,res) => {
+
 
     try {
 
@@ -93,6 +93,7 @@ const getAllFriends = async (req,res) => {
         if(!userId){
 
             return res.status(401).json({msg: "User Id not available"})
+
         }
 
         const friends = await friendshipQueries.getUserFriends(req.user.id)
@@ -103,8 +104,10 @@ const getAllFriends = async (req,res) => {
 
         console.log(error)
         return res.status(500).json({msg: "Something went wrong"})
+
     }
 
+    
     
 } 
 
