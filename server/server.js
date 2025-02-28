@@ -3,6 +3,8 @@ const initializePassport = require('./config/auth')
 
 
 const userRouter = require('./routes/userRoutes')
+const friendshipRouter = require('./routes/friendRoutes')
+const AppError = require('./utils/AppError')
 
 
 const app = express()
@@ -13,9 +15,30 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 app.use('/',userRouter)
+app.use('/',friendshipRouter)
 app.get('/',(req,res)=> {
     return res.status(200).json({msg: "Server running successfully"})
 })
+
+
+app.use((err,req,res,next) => {
+    console.error(err);
+
+
+    if(err instanceof AppError){
+
+        return res.status(err.statusCode).json({
+            status : err.status,
+            message : err.message
+        })
+
+    }
+
+    res.status(500).json({ 
+        status: 'error',
+        msg: "Something went wrong" });
+}) 
+
 
 
 app.listen(5000,() => console.log("Server running on port 5000")) 

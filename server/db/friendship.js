@@ -9,8 +9,8 @@ async function addFriend(userId,friendId,status = "pending") {
         
         const friendship = await prisma.friendship.create({
             data : { 
-                userId1: userId,
-                userId2 : friendId,
+                userId: userId,
+                friendId : friendId,
                 status: status
             }
         })
@@ -31,13 +31,13 @@ async function addFriend(userId,friendId,status = "pending") {
 
 
 // Check if function valid
-async function updateFriendshipStatus(friendId,status) {
+async function updateFriendshipStatus(friendshipId,status) {
 
     try {
         
         const updatedfriendship = await prisma.friendship.update({
             where: {
-                id : id
+                id : friendshipId   
             },
             data: {
                 status : status
@@ -65,7 +65,11 @@ async function getUserFriends(userId) {
 
         const friendships = await prisma.friendship.findMany({
             where: {
-                OR: [{userId1 : userId}, {userId2 : userId}]
+                OR: [
+                    {userId : userId}, 
+                    { friendId: userId}
+                ],
+                status : "accepted"
             }
         })
 
@@ -83,8 +87,56 @@ async function getUserFriends(userId) {
 }
 
 
+const getPendingRequests = async (userId) => {
 
-const getFriendDetails = async () => {
+
+
+    try {
+        
+        const friendRequests = await prisma.friendship.findMany({
+
+            where : {
+                friendId : userId,
+                status: "pending"
+            },
+            include: {
+                user : {
+                    select : {
+                        id: true,
+                        username : true,
+                        profile_picture: true,
+                        bio: true,
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+            
+        }) 
+
+        return friendRequests
+        
+
+    } catch (error) {
+
+        console.error(error)
+        throw new Error("Error getting requests");
+        
+        
+    }
+
+    
+
+
+
+}
+
+
+const getFriendDetails = async (friendId) => {
+
+
+
 
 }
 
@@ -124,6 +176,7 @@ module.exports = {
     addFriend,
     updateFriendshipStatus,
     getUserFriends,
+    getPendingRequests,
     getFriendDetails,
     findFriendship,
 }

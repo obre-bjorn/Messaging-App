@@ -15,3 +15,6 @@ router.post('/addfriend', friendshipController.sendFriendRequest)
 router.post('/acceptfriend', friendshipController.acceptFriendRequest)
 router.get('/allfriends', friendshipController.getAllFriends)
 // router.get()
+
+
+module.exports = router

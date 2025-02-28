@@ -1,14 +1,15 @@
+const AppError = require('../utils/AppError')
 const friendshipQueries = require('../db/friendship')
 
 
-//! Implement to check if a request exists in the dbUtitlty and in the conroller
+//! Implement to check if a request exists in the dbUtitlty and in the controller
 
 const sendFriendRequest = async (req,res) => {
 
 
     const userId = parseInt(req.user.id)
 
-    const {friendId} = req.body
+    let {friendId} = req.body
 
     friendId = parseInt(friendId)
 
@@ -29,6 +30,14 @@ const sendFriendRequest = async (req,res) => {
 
         }
 
+
+        const existingFriendship = await friendshipQueries.findFriendship(userId, friendId)
+
+        if(existingFriendship) {
+
+            return res.status(401).json({msg : "Already friends or request already sent"})
+
+        }
 
         const friend = await friendshipQueries.addFriend(userId, friendId)
         return res.status(201).json({msg:"Sent friend request", friend: friend})
@@ -57,18 +66,36 @@ const acceptFriendRequest = async (req,res) => {
 
         if(!friendId){
 
-            return res.status(401).json({msg: "Provide friend id"})
+            return res.status(403).json({msg: "Provide friend id"})
 
         }
 
 
         if(userId === friendId){
             
-            return res.status(401).json({msg: "Cannot accepts self request"})
+            return res.status(403).json({msg: "Cannot accepts self request"})
 
         }
 
-        const friend = await friendshipQueries.updateFriendshipStatus(friendId, "accepted")
+
+        //Check friendship 
+        const friendship = await friendshipQueries.findFriendship(userId,friendId)
+
+        if(!friendship || friendship.createdAt !== "pending"){
+
+            return res.status(403).json({msg: "Friendship does not exist"})
+
+        }
+
+
+        if(friendship.friendId !== userId){
+
+            throw new AppError("You are not the recipient of this friend request", 403)
+
+        }
+
+
+        const friend = await friendshipQueries.updateFriendshipStatus(friendship.id, "accepted")
         return res.status(200).json({msg: "Friendship approved", friend: friend})
 
         
@@ -107,7 +134,7 @@ const getAllFriends = async (req,res) => {
 
     }
 
-    
+
     
 } 
 
