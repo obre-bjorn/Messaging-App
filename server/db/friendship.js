@@ -142,20 +142,41 @@ const getFriendDetails = async (friendId) => {
 
 
 
-const findFriendship = async (userId, friendId) => {
+const findFriendship = async (userId, friendId, type) => {
 
 
     try {
         
+        let whereClause
+
+
+
+        if(type === "send"){
+
+
+
+            whereClause = { OR : [
+                {friendId : friendId, userId: userId},
+                {userId : friendId, friendId : userId}
+            ]}
+
+        }
+
+        if(type === "accept"){
+
+            whereClause = {
+                userId: friendId,
+                friendId: userId, 
+                status: "pending", 
+            };
+
+
+
+        }
         
         const friendship = await prisma.friendship.findFirst(
             {
-                where: {
-                    OR:[
-                        {friendId : friendId, userId: userId},
-                        {userId : friendId, friendId : userId}
-                    ]
-                }
+                where: whereClause
             }
         )
         

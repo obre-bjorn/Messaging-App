@@ -2,9 +2,8 @@ const AppError = require('../utils/AppError')
 const friendshipQueries = require('../db/friendship')
 
 
-//! Implement to check if a request exists in the dbUtitlty and in the controller
 
-const sendFriendRequest = async (req,res) => {
+const sendFriendRequest = async (req,res,next) => {
 
 
     const userId = parseInt(req.user.id)
@@ -18,44 +17,46 @@ const sendFriendRequest = async (req,res) => {
 
         if(!friendId){
 
-            return res.status(400).json({msg: "Provide friend to be added"}
-
-            )
+            throw new AppError("Provide friend to be added",400)
+            
         }
 
 
         if(userId === friendId){
 
-            return res.status(400).json({msg : "Cannot send request to self"})
 
+            throw new AppError("Cannot send request to self",400)
+            
         }
-
-
-        const existingFriendship = await friendshipQueries.findFriendship(userId, friendId)
-
+        
+        
+        const existingFriendship = await friendshipQueries.findFriendship(userId, friendId, "send")
+        
         if(existingFriendship) {
 
-            return res.status(401).json({msg : "Already friends or request already sent"})
+            throw new AppError("Already friends with this user",400)
 
         }
 
         const friend = await friendshipQueries.addFriend(userId, friendId)
+
         return res.status(201).json({msg:"Sent friend request", friend: friend})
 
         
     } catch (error) {
         
+
         console.log(error)
-        return res.status(500).json({msg: "something went wrong"}) 
+        next(error)
+        
 
     }
-
 
 } 
 
 
 
-const acceptFriendRequest = async (req,res) => {
+const acceptFriendRequest = async (req,res,next) => {
 
     
     const userId = parseInt(req.user.id)
@@ -66,31 +67,25 @@ const acceptFriendRequest = async (req,res) => {
 
         if(!friendId){
 
-            return res.status(403).json({msg: "Provide friend id"})
+            throw new AppError("Provide friend id", 400)
+            
 
         }
 
 
         if(userId === friendId){
             
-            return res.status(403).json({msg: "Cannot accepts self request"})
-
+            throw new AppError("Cannot accept self request",400)
+        
         }
 
 
         //Check friendship 
-        const friendship = await friendshipQueries.findFriendship(userId,friendId)
+        const friendship = await friendshipQueries.findFriendship(userId,friendId,"accept")
 
-        if(!friendship || friendship.createdAt !== "pending"){
+        if(!friendship || friendship.status !== "pending"){
 
-            return res.status(403).json({msg: "Friendship does not exist"})
-
-        }
-
-
-        if(friendship.friendId !== userId){
-
-            throw new AppError("You are not the recipient of this friend request", 403)
+            throw new AppError ("Friendship does not exist", 400)
 
         }
 
@@ -102,7 +97,7 @@ const acceptFriendRequest = async (req,res) => {
     } catch (error) {
         
         console.log(error)
-        return res.status(500).json({msg: "Something went wrong"})
+        next(error)
 
     }
 
@@ -110,27 +105,29 @@ const acceptFriendRequest = async (req,res) => {
 
 
 
-const getAllFriends = async (req,res) => {
+const getAllFriends = async (req,res,next) => {
 
 
     try {
 
-        const userId = req.user.id
+        const userId = parseInt(req.user.id)
 
         if(!userId){
+            
 
-            return res.status(401).json({msg: "User Id not available"})
+            throw new AppError("User Id not available",400)
 
         }
 
         const friends = await friendshipQueries.getUserFriends(req.user.id)
-        return res.status(201).json({msg: "Friends fetched successfully", friends: friends})
+        return res.status(200).json({msg: "Friends fetched successfully", friends: friends})
 
         
     } catch (error) {
 
         console.log(error)
-        return res.status(500).json({msg: "Something went wrong"})
+        next(error)
+        
 
     }
 
@@ -140,8 +137,38 @@ const getAllFriends = async (req,res) => {
 
 
 
+
+
+
+const getfriendRequests = async (req,res,next) => {
+
+    try {
+        
+        const userId = req.user.id
+        
+        if(!userId){
+
+            throw new AppError("Provide user ID", 400)
+
+        }
+        
+        const requests = await friendshipQueries.getPendingRequests(userId)
+
+        return res.status(200).json({msg: "Friend requests fetched succesfully", requests: requests})
+
+
+    } catch (error) {
+        
+        next(error)
+
+    }
+
+}
+
+
 module.exports = {
     sendFriendRequest,
     acceptFriendRequest,
-    getAllFriends
+    getAllFriends,
+    getfriendRequests
 }
