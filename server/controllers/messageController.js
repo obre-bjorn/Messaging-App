@@ -1,7 +1,8 @@
 const AppError = require('../utils/AppError')
 const friendshipQueries = require('../db/friendship')
 const messageQueries = require('../db/message')
-const { parse } = require('dotenv')
+
+
 
 
 
@@ -115,10 +116,48 @@ const getConversations = async (req,res,next) => {
 }
 
 
+const getMessagesBtwnUsers = async (req,res,next) => {
+
+
+    try {
+        
+        const userId = parseInt(req.user.id)
+        const friendId = parseInt(req.params.friendId)
+
+
+        if(!userId || !friendId){
+
+
+            throw new AppError("Provide both user and friend ids", 400)
+
+        }
+
+
+        const messages = await messageQueries.getUserMessages(userId,friendId)
+
+        return res.status(200).json({
+            msg: "Messages fetched successfully",
+            messages : messages
+        })
+
+
+    } catch (error) {
+        
+        console.log(error)
+        next(error)
+
+
+    }
+
+
+}
+
+
 
 module.exports = { 
     sendMessage,
-    getConversations
+    getConversations,
+    getMessagesBtwnUsers
 }
 
 

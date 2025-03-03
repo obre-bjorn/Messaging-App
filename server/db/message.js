@@ -85,6 +85,7 @@ async function getUsersWithConversation(userId) {
                 createdAt : true,
                 senderId: true,
                 recieverId: true,
+                isRead: true,
                 sender : {
                     select: {
                         id: true,
@@ -162,7 +163,22 @@ async function getUserMessages(userId, friendId){
 
     try {
         
-        
+        const messages = await prisma.message.findMany({
+            where: {
+                OR: [
+                    {senderId: userId, recieverId: friendId },
+                    {senderId: friendId, recieverId: userId}
+                ]
+            },
+            orderBy : {
+                createdAt: 'asc'
+            }
+
+        })
+
+
+
+        return messages
 
 
     } catch (error) {
@@ -179,6 +195,6 @@ async function getUserMessages(userId, friendId){
 
 module.exports = {
     sendMessage,
-    getUsersWithConversation
-
+    getUsersWithConversation,
+    getUserMessages
 }

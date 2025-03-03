@@ -10,6 +10,7 @@ const router = express.Router()
 
 router.post('/send_message', messageController.sendMessage)
 router.get('/get_conversations', messageController.getConversations)
+router.get('/messages/:friendId', messageController.getMessagesBtwnUsers)
 
 
 
