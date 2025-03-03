@@ -11,10 +11,10 @@ const router = express.Router()
 // Authenticates each route 
 router.use(authenticateJwt)
 
-router.post('/addfriend', friendshipController.sendFriendRequest)
-router.post('/acceptfriend', friendshipController.acceptFriendRequest)
-router.get('/allfriends', friendshipController.getAllFriends)
-// router.get()
+router.post('/add_friend', friendshipController.sendFriendRequest)
+router.post('/accept_friend', friendshipController.acceptFriendRequest)
+router.get('/all_friends', friendshipController.getAllFriends)
+router.get('/get_requests', friendshipController.getfriendRequests)
 
 
 module.exports = router

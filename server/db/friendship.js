@@ -155,9 +155,10 @@ const findFriendship = async (userId, friendId, type) => {
 
 
 
-            whereClause = { OR : [
-                {friendId : friendId, userId: userId},
-                {userId : friendId, friendId : userId}
+            whereClause = { 
+                OR : [
+                    {friendId : friendId, userId: userId},
+                    {userId : friendId, friendId : userId}
             ]}
 
         }

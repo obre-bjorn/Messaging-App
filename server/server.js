@@ -4,6 +4,9 @@ const initializePassport = require('./config/auth')
 
 const userRouter = require('./routes/userRoutes')
 const friendshipRouter = require('./routes/friendRoutes')
+const messageRouter  = require('./routes/messageRoutes')
+
+
 const AppError = require('./utils/AppError')
 
 
@@ -14,8 +17,15 @@ initializePassport()
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
+
+//Routes
 app.use('/',userRouter)
 app.use('/',friendshipRouter)
+app.use('/',messageRouter)
+
+
+
+
 app.get('/',(req,res)=> {
     return res.status(200).json({msg: "Server running successfully"})
 })

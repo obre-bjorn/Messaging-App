@@ -144,7 +144,7 @@ const getfriendRequests = async (req,res,next) => {
 
     try {
         
-        const userId = req.user.id
+        const userId = parseInt(req.user.id)
         
         if(!userId){
 

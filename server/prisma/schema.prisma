@@ -33,11 +33,12 @@ model User {
 }
 
 model Message {
-  id         Int     @unique
+  id         Int     @id @default(autoincrement())
   senderId   Int
   recieverId Int?
   groupId    Int?
   content    String
+  createdAt  DateTime @default(now())
   sender     User    @relation("Sender", fields: [senderId], references: [id])
   reciever   User?    @relation("Reciever", fields: [recieverId], references: [id])
   isRead     Boolean @default(false)
@@ -46,17 +47,17 @@ model Message {
 }
 
 model Friendship {
-  id        Int       @unique @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    Int        // user sending the requesst
   friendId  Int      //  user recieveing the request
-  status    String    // "accepted", "pending",  "rejected"
+  status    String    // "accepted", "pending"
   createdAt DateTime  @default(now())
   user     User      @relation("FriendshipUser1", fields: [userId], references: [id])
   friend     User      @relation("FriendshipUser2", fields: [friendId], references: [id])
 }
 
 model GroupChat {
-  id        Int              @unique @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   name      String
   createdBy Int
   createdAt DateTime         @default(now())
