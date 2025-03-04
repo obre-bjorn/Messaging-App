@@ -124,11 +124,26 @@ const getMessagesBtwnUsers = async (req,res,next) => {
         const userId = parseInt(req.user.id)
         const friendId = parseInt(req.params.friendId)
 
+        console.log("Friend ID: ",friendId)
+
 
         if(!userId || !friendId){
 
 
             throw new AppError("Provide both user and friend ids", 400)
+
+        }
+
+
+        const friendship = await friendshipQueries.findFriendship(userId,friendId)
+
+
+        console.log(friendship)
+        if(!friendship){
+
+
+            throw new AppError("User not found", 404)
+
 
         }
 
@@ -148,7 +163,6 @@ const getMessagesBtwnUsers = async (req,res,next) => {
 
 
     }
-
 
 }
 

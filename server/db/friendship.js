@@ -2,7 +2,6 @@ const prisma = require('../utils/prismaClient')
 
 
 
-
 async function addFriend(userId,friendId,status = "pending") {
 
     try {
@@ -147,7 +146,11 @@ const findFriendship = async (userId, friendId, type) => {
 
     try {
         
-        let whereClause
+        let whereClause = { 
+                OR : [
+                    {friendId : friendId, userId: userId},
+                    {userId : friendId, friendId : userId}
+            ]}
 
 
 
