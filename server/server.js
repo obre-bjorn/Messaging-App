@@ -5,6 +5,7 @@ const initializePassport = require('./config/auth')
 const userRouter = require('./routes/userRoutes')
 const friendshipRouter = require('./routes/friendRoutes')
 const messageRouter  = require('./routes/messageRoutes')
+const groupChatRouter = require('./routes/groupChatRoutes')
 
 
 const AppError = require('./utils/AppError')
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use('/',userRouter)
 app.use('/',friendshipRouter)
 app.use('/',messageRouter)
+app.use('/',groupChatRouter)
 
 
 

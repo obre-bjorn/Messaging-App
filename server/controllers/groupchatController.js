@@ -145,6 +145,12 @@ const removeGroupMember = async (req,res,next) => {
 
         const removedUser = await groupChatQueries.removeGroupMember(groupId,memberId)
 
+        return res.status(200).json({
+            success: true,
+            msg: "Member successfully removed",
+            data: removedUser
+        })
+
     } catch (error) {
 
         console.error(error)
@@ -169,5 +175,6 @@ const getGroupMessages = async (req,res,next) => {
 
 module.exports = {
     createGroupChat,
-    addGroupMember
+    addGroupMember,
+    removeGroupMember
 }

@@ -11,6 +11,7 @@ async function findGroupMember(userId, groupId) {
                 groupId_userId: {
                     groupId : groupId,
                     userId: userId
+                }
             }
         })
 
@@ -91,10 +92,10 @@ async function removeGroupMember(groupId,memberId) {
 
         const removedMember = await prisma.groupChatMember.delete({
             where : {
-               groupId_userId: {
-                groupId: groupId,
-                userId:memberId
-               }
+                    groupId_userId: {
+                    groupId: groupId,
+                    userId:memberId
+                }
             }
         })
 
@@ -118,7 +119,7 @@ async function getGroupMessages(groupId){
                 id : groupId
             },
             include: {
-                messages: true
+                messages: true,
             }
         })
 
