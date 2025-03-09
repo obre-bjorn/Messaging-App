@@ -1,5 +1,31 @@
 const prisma = require('../utils/prismaClient')
 
+
+async function findGroupMember(userId, groupId) {
+
+
+    try {
+        
+        const member = await prisma.groupChatMember.findUnique({
+            where:{
+                groupId_userId: {
+                    groupId : groupId,
+                    userId: userId
+            }
+        })
+
+        return member
+
+
+
+    } catch (error) {
+        
+        console.log(error)
+        throw new Error("Cannot find group member")
+
+    }
+}
+
 async function createGroupChat(groupName,createdBy) {
 
     try {
@@ -7,8 +33,18 @@ async function createGroupChat(groupName,createdBy) {
         const groupChat = await prisma.groupChat.create({
             data: {
                 name: groupName,
-                createdBy: createdBy
+                createdBy: createdBy,
 
+                members : {
+                    create: {
+                        userId: createdBy,
+                        role: "admin"
+                    }
+                }
+
+            },
+            include : {
+                members: true
             }
         })
 
@@ -33,7 +69,7 @@ async function addMemberToGroup(groupId, userId,role="member"){
 
         const member = await prisma.groupChatMember.create({
             data : {
-                id: groupId,
+                groupId: groupId,
                 role: role,
                 userId: userId
             }
@@ -49,13 +85,16 @@ async function addMemberToGroup(groupId, userId,role="member"){
 
 }
 
-async function removeGroupMember(groupId,userId) {
+async function removeGroupMember(groupId,memberId) {
     
     try {
 
         const removedMember = await prisma.groupChatMember.delete({
             where : {
-                userId: userId
+               groupId_userId: {
+                groupId: groupId,
+                userId:memberId
+               }
             }
         })
 
@@ -108,6 +147,7 @@ async function deleteGroupChat (groupId) {
 } 
 
 module.exports ={
+    findGroupMember,
     addMemberToGroup,
     createGroupChat,
     deleteGroupChat,
