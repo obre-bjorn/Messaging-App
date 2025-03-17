@@ -1,5 +1,5 @@
 const AppError = require('../utils/AppError')
-const friendshipQueries = require('../db/friendship')
+const friendshipQueries = require('../services/friendship')
 
 
 

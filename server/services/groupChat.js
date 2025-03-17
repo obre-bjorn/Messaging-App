@@ -110,6 +110,36 @@ async function removeGroupMember(groupId,memberId) {
 }
 
 
+async function getGroupChats(userId) {
+
+
+    try {
+        
+        const groups = await prisma.groupChatMember.findMany({
+            where : {
+                userId : userId
+            },
+            include : {
+                group: true
+            }
+        })
+
+
+
+        return groups
+
+    } catch (error) {
+        
+        console.log(error)
+        throw new Error("Failed to get groups")
+    }
+
+
+
+
+} 
+
+
 async function getGroupMessages(groupId){
 
     try {
@@ -119,7 +149,11 @@ async function getGroupMessages(groupId){
                 id : groupId
             },
             include: {
-                messages: true,
+                messages: {
+                    orderBy: {
+                        createdAt : asc
+                    }
+                }
             }
         })
 
@@ -135,7 +169,9 @@ async function getGroupMessages(groupId){
 
 }
 
-async function deleteGroupChat (groupId) {
+async function deleteGroupChat (groupId,userId) {
+
+    
 
     const deletedGroup  = await prisma.groupChat.delete({
         where: {
@@ -152,5 +188,7 @@ module.exports ={
     addMemberToGroup,
     createGroupChat,
     deleteGroupChat,
-    removeGroupMember
+    removeGroupMember,
+    getGroupMessages,
+    getGroupChats
 }

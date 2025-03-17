@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 
-const userQueries = require('../db/user')
+const userQueries = require('../services/user')
 const { generateToken} = require('../utils/jwtUtils')
 
 //! Validate forms in the router 

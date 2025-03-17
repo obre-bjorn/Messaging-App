@@ -1,6 +1,6 @@
 const passport = require('passport')
 const {ExtractJwt, Strategy} = require('passport-jwt')
-const userQueries = require('../db/user')
+const userQueries = require('../services/user')
 
 require('dotenv').config()
 

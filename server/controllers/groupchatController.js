@@ -26,6 +26,8 @@ const createGroupChat = async (req,res,next) => {
         }
 
 
+
+
         
         const groupChat = await groupChatQueries.createGroupChat(groupName,userId)
         
@@ -87,7 +89,7 @@ const addGroupMember =  async (req,res, next ) => {
         const addedMember = await groupChatQueries.addMemberToGroup(groupId,memberId)
 
 
-        return res.json(200).json({
+        return res.status(200).json({
             msg:"Member added successfully",
             data : addedMember
 
@@ -166,9 +168,68 @@ const removeGroupMember = async (req,res,next) => {
 
 const getGroupMessages = async (req,res,next) => {
 
+    const userId = parseInt(req.user.id)
+    const groupId = parseInt(req.body.groupId)
+
+    try {
 
 
+        // ! Check if group exists edge case
 
+        const user = await groupChatQueries.findGroupMember(userId)
+
+
+        if(!user){
+
+            throw new AppError("Cannot retireve messages for these group",401)
+
+        }
+
+        
+        const groupMessages = await groupChatQueries.getGroupMessages(groupId)
+
+
+        return res.status(201).json({
+            success: true,
+            msg:"Successfully fetched group messages",
+            messages: groupMessages
+        })
+
+    } catch (error) {
+        
+        console.error(error)
+        next(error)
+
+    }
+
+}
+
+
+const getGroupChats = async (req,res,next) => {
+
+
+    try {
+
+        const userId = parseInt(req.user.id)
+
+
+        const groups = await groupChatQueries.getGroupChats(userId)
+
+
+        return res.status(200).json({
+            success : true,
+            msg : "Groups fetched successfully",
+            groups : groups
+        })
+
+
+        
+    } catch (error) {
+
+        console.error(error)
+        next(error)
+        
+    }
 
 }
 
@@ -176,5 +237,7 @@ const getGroupMessages = async (req,res,next) => {
 module.exports = {
     createGroupChat,
     addGroupMember,
-    removeGroupMember
+    removeGroupMember,
+    getGroupMessages,
+    getGroupChats
 }
