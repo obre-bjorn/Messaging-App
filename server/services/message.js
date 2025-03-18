@@ -4,9 +4,7 @@ const prisma = require('../utils/prismaClient')
 
 async function sendMessage(senderId,recieverId,content, groupId=null) {
 
-
-
-
+    
     try {
 
         const message = await prisma.message.create({

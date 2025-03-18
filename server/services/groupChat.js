@@ -151,7 +151,7 @@ async function getGroupMessages(groupId){
             include: {
                 messages: {
                     orderBy: {
-                        createdAt : asc
+                        createdAt : "asc"
                     }
                 }
             }

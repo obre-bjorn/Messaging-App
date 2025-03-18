@@ -176,7 +176,7 @@ const getGroupMessages = async (req,res,next) => {
 
         // ! Check if group exists edge case
 
-        const user = await groupChatQueries.findGroupMember(userId)
+        const user = await groupChatQueries.findGroupMember(userId,groupId)
 
 
         if(!user){
@@ -185,7 +185,8 @@ const getGroupMessages = async (req,res,next) => {
 
         }
 
-        
+        //TODO Remamber upon getting messages all unread messages should be altered to read.
+
         const groupMessages = await groupChatQueries.getGroupMessages(groupId)
 
 

@@ -1,6 +1,8 @@
 const AppError = require('../utils/AppError')
+
 const friendshipQueries = require('../services/friendship')
 const messageQueries = require('../services/message')
+const groupChatQueries = require('../services/groupChat')
 
 
 
@@ -9,7 +11,6 @@ const messageQueries = require('../services/message')
 
 const sendMessage = async (req,res,next) => {
 
-//TODO -Classify between personal messages and Group Messages
 
     let {friendId, content, groupId} = req.body
     const userId = parseInt(req.user.id)
@@ -19,13 +20,13 @@ const sendMessage = async (req,res,next) => {
 
         if(friendId && groupId){
 
-            throw AppError("Cannot send to both group and freind", 400)
+            throw new AppError("Cannot send to both group and freind", 400)
 
         }
 
         if(!friendId && !groupId){
 
-            throw AppError("Provide either friend or group ID", 400)
+            throw new AppError("Provide either friend or group ID", 400)
 
         }
         
@@ -33,7 +34,7 @@ const sendMessage = async (req,res,next) => {
         if(!content){
 
 
-            throw AppError("Provide content to be sent", 400)
+            throw new AppError("Provide content to be sent", 400)
         }
 
 
@@ -49,13 +50,13 @@ const sendMessage = async (req,res,next) => {
 
             if(!friendship){
 
-                throw AppError("You are not friends with this user", 403)
+                throw new AppError("You are not friends with this user", 403)
             }
 
 
             message = await messageQueries.sendMessage(userId,friendId,content)
 
-            return res.status(201).json({msg: "Message sent succesfully", message : message})
+            return res.status(201).json({success: true,msg: "Message sent succesfully", message : message})
 
 
         }else if(groupId){
@@ -65,7 +66,23 @@ const sendMessage = async (req,res,next) => {
 
             //TODO Implement after implementing group chat
 
+            const isMember = await groupChatQueries.findGroupMember(userId,groupId)
 
+            if(!isMember){
+
+                throw new AppError("You are not a member of this group",401)
+
+            }
+
+
+
+            message = await messageQueries.sendMessage(userId,null,content,groupId)
+
+            return res.status(200).json({
+                success:true,
+                msg: "Message sent succesfully to group",
+                message : message
+            })
 
         }
 
