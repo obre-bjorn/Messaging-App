@@ -4,7 +4,7 @@ require('dotenv').config()
 
 
 
-const generateToken = (payload, expires = '4h') => {
+const generateToken = (payload, expires = '8h') => {
 
     return jwt.sign(payload,process.env.JWT_SECRET_KEY,{expiresIn : expires})
 
