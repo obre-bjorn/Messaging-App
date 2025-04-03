@@ -10,6 +10,8 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+import { AuthProvider } from "./contexts/AuthContext";
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -25,6 +27,9 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
+
+    <AuthProvider>
+
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
@@ -38,12 +43,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
+    </AuthProvider>
   );
 }
 
 export default function App() {
+  
   return <Outlet />;
 }
+
+
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";

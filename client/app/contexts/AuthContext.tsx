@@ -21,13 +21,16 @@ type AuthContextType = {
     logout: () => void;
 
 }
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 
-export function AuthProvider (children : ReactNode){
+export function AuthProvider ({children} : AuthProviderProps){
 
     const [user, setUser] = useState<User|null>(null) 
     const [loading, setLoading] = useState(true)
