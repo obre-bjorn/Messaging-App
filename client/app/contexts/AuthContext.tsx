@@ -42,24 +42,32 @@ export function AuthProvider ({children} : AuthProviderProps){
         const checkAuthStatus = async () => {
 
 
-            const token: string | null = await localStorage.getItem('token')
+            const token: string | null = localStorage.getItem('token')
 
             if(token == null){
                 setLoading(false)
                 return
+                
             }
 
 
             try {
 
                 const {user} = await validateToken(token)
-                setUser(user)
+                console.log("fetching User: ",user)
+                if(user){
+                    
+                    setUser(user)
+                    
+                }
+
+                return
 
                 
             } catch (error) {
                 
                 localStorage.removeItem('token')
-
+                
             }finally { 
 
                 setLoading(false)

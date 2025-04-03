@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 import { useAuth } from "~/contexts/AuthContext";
-import ProtectedRoute from "~/components/auth/ProtectedRoute";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,14 +11,14 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
 
-  const {user} = useAuth()
+  const {user,loading} = useAuth()
+  
 
-  return (
-         <ProtectedRoute>
+  return ( <ProtectedRoute>
 
-          <h1>
-            Welcome : {user.username}
-          </h1>
+            <h1>
+              Welcome : User
+            </h1>
 
         </ProtectedRoute>)
 }

@@ -1,5 +1,6 @@
-import { Navigate } from "react-router"
+import { useNavigate } from "react-router"
 import { useAuth } from "~/contexts/AuthContext"
+import { useEffect } from "react"
 
 interface ProtectedRouteProps {
     children : React.ReactNode
@@ -7,30 +8,23 @@ interface ProtectedRouteProps {
 
 
 export default function ProtectedRoute({children}: ProtectedRouteProps ){
-
+    const navigate = useNavigate()
     const {isAuthenticated, loading} = useAuth()
 
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            navigate('/login', { replace: true });
+        }
+    }, [loading, isAuthenticated, navigate]);
 
-    if(loading) {
-
-        <div>
-            <h1 className="loading">Loading...</h1>
-        </div>
-
+    if (loading) {
+        return <div className="loading"> Loading...</div>// or return a loading spinner
     }
 
-    if(!isAuthenticated){
-
-        <Navigate to="/login"/>
+    if (!isAuthenticated) {
+        return null; // while redirect happens
     }
 
-
-
-    return (
-
-        <>
-            {children}
-        </>
-    )
+    return <>{children}</>;
 
 }
