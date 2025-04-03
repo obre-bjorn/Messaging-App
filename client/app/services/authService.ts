@@ -11,7 +11,7 @@ interface AuthResponse {
 
 export const login  = async (username: string, password : string): Promise<AuthResponse> => {
 
-    const response = await api.post('/login', {username,password}) 
+    const response = await api.post<AuthResponse>('/login', {username,password}) 
     return response.data
 
 }
@@ -24,5 +24,15 @@ export const register  = async (email : string ,username: string, password : str
 
 }
 
+export const validateToken = async (token : string | null) : Promise<AuthResponse> => {
 
-//! Implement to validate token in the backend 
+    const response = await api.get<AuthResponse>('/validate',{
+        headers : {
+            Authorization : token
+        }
+    })
+    
+    return response.data
+
+}
+
