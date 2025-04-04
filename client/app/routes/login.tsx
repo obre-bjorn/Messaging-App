@@ -1,13 +1,17 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { useAuth } from "~/contexts/AuthContext"
 
 
 
 export default function Login() {
-
+    
+    const [username,setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const navigate = useNavigate()
-    const {isAuthenticated,loading} = useAuth()
+    const {isAuthenticated,login} = useAuth()
 
 
     useEffect(()=> {
@@ -21,32 +25,81 @@ export default function Login() {
 
     },[isAuthenticated])
 
-    if (loading || isAuthenticated) {
+
+    const handleSubmit = async(e : React.FormEvent) => {
+
+        console.log(username, password)
+
+        e.preventDefault()
+        setIsSubmitting(true)
+        setError('')
+        
+
+        try {
+            await login(username,password)
+            
+        } catch (error) {
+            
+            console.log(error)
+            setError("Failed to login! Check your credentials.")
+        }
+        finally{
+            setIsSubmitting(false)
+        }
+    }
+
+
+
+    if (isAuthenticated) {
         return null; // Or <LoadingSpinner />
     }
 
     return (
         <div className="hero bg-base-200 min-h-screen">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">Login now!</h1>
-                    <p className="py-6">
-                        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                        quasi. In deleniti eaque aut repudiandae et a id nisi.
-                    </p>
-                </div>
-                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+            <div className="hero-content flex-col w-full ">
+
+                <form className="card lg:p-5 bg-base-100 w-full max-w-md shrink-0 shadow-2xl" onSubmit={handleSubmit}>
+
+
+                    {error && <h1 className="text-warning">{error}</h1>}
+                    
+                    <div className="text-center lg:text-left min-w-60 ">
+                        <h1 className="text-5xl pb-4 text-center">Let's Chat</h1>
+                        <h1 className="text-5xl pb-4 text-center">👥</h1>
+                    </div>
                     <div className="card-body">
                         <fieldset className="fieldset">
-                        <label className="fieldset-label">Email</label>
-                        <input type="email" className="input" placeholder="Email" />
-                        <label className="fieldset-label">Password</label>
-                        <input type="password" className="input" placeholder="Password" />
-                        <div><a className="link link-hover">Forgot password?</a></div>
-                        <button className="btn btn-neutral mt-4">Login</button>
-                        </fieldset>
-                    </div>
-                </div>
+
+                                <label className="fieldset-label">Username</label>
+                                <input 
+                                    type="text" 
+                                    className="input w-full" 
+                                    placeholder="Username"
+                                    value= {username}
+                                    onChange={ (e) => setUsername(e.target.value)} 
+                                />
+
+                                <label className="fieldset-label">Password</label>
+
+                                <input 
+                                    type="password" 
+                                    className="input w-full" 
+                                    placeholder="Password"
+                                    value= {password}
+                                    onChange={ (e) => setPassword(e.target.value)} 
+                                />
+
+                                <div className="mt-3 flex justify-between">
+                                    <a className="link link-hover">Forgot password?</a>
+                                    <a className="link link-hover" href="/register">Register</a>
+                                </div>
+                                
+
+                                <button className="btn btn-neutral mt-4 font-bold">Login</button>
+                        </fieldset>   
+                    </div>    
+                </form>       
+
             </div>
         </div>
     )

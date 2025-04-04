@@ -41,7 +41,7 @@ export function AuthProvider ({children} : AuthProviderProps){
 
         const checkAuthStatus = async () => {
 
-
+            console.log("Running")
             const token: string | null = localStorage.getItem('token')
 
             if(token == null){
@@ -84,7 +84,7 @@ export function AuthProvider ({children} : AuthProviderProps){
 
 
     const login = async ( username: string, password: string) : Promise<void> =>{
-        setLoading(true)
+        
 
         try {
             const {token, user} = await apiLogin(username,password)
@@ -96,14 +96,10 @@ export function AuthProvider ({children} : AuthProviderProps){
         }catch (error) {
             
             throw new Error('Something went wrong')
-
-
-        }finally{
-
-            setLoading(false)
         }
-
     }
+
+
     const logout = () : void => {
         
         localStorage.removeItem('token')
