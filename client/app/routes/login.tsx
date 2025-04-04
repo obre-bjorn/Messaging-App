@@ -1,8 +1,29 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router"
+import { useAuth } from "~/contexts/AuthContext"
 
 
 
 export default function Login() {
 
+    const navigate = useNavigate()
+    const {isAuthenticated,loading} = useAuth()
+
+
+    useEffect(()=> {
+
+
+        if(isAuthenticated){
+
+            navigate('/',{replace: true})
+
+        }
+
+    },[isAuthenticated])
+
+    if (loading || isAuthenticated) {
+        return null; // Or <LoadingSpinner />
+    }
 
     return (
         <div className="hero bg-base-200 min-h-screen">

@@ -26,13 +26,13 @@ export const register  = async (email : string ,username: string, password : str
 
 export const validateToken = async (token : string | null) : Promise<AuthResponse> => {
 
-    const response = await api.get<AuthResponse>('/validate',{
-        headers : {
-            Authorization : token
-        }
-    })
-    
-    return response.data
+     try {
+        const response = await api.get<AuthResponse>('/validate')
+        return response.data;
+    } catch (error) {
+        // Handle or rethrow the error
+        throw new Error("Token validation failed");
+    }
 
 }
 

@@ -17,8 +17,10 @@ export default function ProtectedRoute({children}: ProtectedRouteProps ){
         }
     }, [loading, isAuthenticated, navigate]);
 
+
+
     if (loading) {
-        return <div className="loading"> Loading...</div>// or return a loading spinner
+        return <div className="loading"> </div>// or return a loading spinner
     }
 
     if (!isAuthenticated) {

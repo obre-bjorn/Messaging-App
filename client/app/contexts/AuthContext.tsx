@@ -55,6 +55,7 @@ export function AuthProvider ({children} : AuthProviderProps){
 
                 const {user} = await validateToken(token)
                 console.log("fetching User: ",user)
+
                 if(user){
                     
                     setUser(user)

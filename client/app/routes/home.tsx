@@ -17,7 +17,7 @@ export default function Home() {
   return ( <ProtectedRoute>
 
             <h1>
-              Welcome : User
+              Welcome : {user && user.username}
             </h1>
 
         </ProtectedRoute>)
