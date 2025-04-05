@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router"
+import { useNavigate, Outlet } from "react-router"
 import { useAuth } from "~/contexts/AuthContext"
 import { useEffect } from "react"
 
@@ -27,6 +27,8 @@ export default function ProtectedRoute({children}: ProtectedRouteProps ){
         return null; // while redirect happens
     }
 
-    return <>{children}</>;
+    return <div>
+    <Outlet/>
+    </div>;
 
 }

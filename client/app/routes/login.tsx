@@ -11,9 +11,9 @@ export default function Login() {
     const [error, setError] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const navigate = useNavigate()
-    const {isAuthenticated,login} = useAuth()
+    const {isAuthenticated,login,loading} = useAuth()
 
-
+    console.log("RENDERED")
     useEffect(()=> {
 
 
@@ -34,9 +34,11 @@ export default function Login() {
         setIsSubmitting(true)
         setError('')
         
+        console.log("Loading: ",loading)
 
         try {
             await login(username,password)
+
             
         } catch (error) {
             
@@ -49,9 +51,13 @@ export default function Login() {
     }
 
 
-
-    if (isAuthenticated) {
-        return null; // Or <LoadingSpinner />
+    
+    if (loading || isAuthenticated) {
+        
+        return <div className="loading"></div>
+        
+        
+        null; // Or <LoadingSpinner />
     }
 
     return (
@@ -95,11 +101,12 @@ export default function Login() {
                                 </div>
                                 
 
-                                <button className="btn btn-neutral mt-4 font-bold">Login</button>
-                        </fieldset>   
+                                <button className="btn btn-primary mt-4 font-bold">Login</button>
+                        </fieldset>
                     </div>    
                 </form>       
 
+                    <button className="btn btn-neutral mt-4 font-bold">Login as Guest</button>   
             </div>
         </div>
     )

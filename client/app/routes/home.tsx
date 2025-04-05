@@ -14,11 +14,7 @@ export default function Home() {
   const {user,loading} = useAuth()
   
 
-  return ( <ProtectedRoute>
-
-            <h1>
+  return (  <h1>
               Welcome : {user && user.username}
-            </h1>
-
-        </ProtectedRoute>)
+            </h1>)
 }

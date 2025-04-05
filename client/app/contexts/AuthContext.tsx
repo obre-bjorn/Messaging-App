@@ -22,7 +22,7 @@ type AuthContextType = {
 
 }
 interface AuthProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 
@@ -175,3 +175,4 @@ export function useAuth () {
 
 
 
+// Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJvYnJlIiwiaWF0IjoxNzQzODczMzc5LCJleHAiOjE3NDM5MDIxNzl9.h7R41Sne07nktBTcyyHXr_Mxvf-v5-aGPPuVigvMqo0
