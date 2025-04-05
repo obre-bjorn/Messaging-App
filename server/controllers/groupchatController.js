@@ -21,7 +21,7 @@ const createGroupChat = async (req,res,next) => {
 
         if(!userValid){
 
-            throw new AppError("This user does not exist", 403)
+            throw new AppError("This user does not exist", 400)
 
         }
 
@@ -59,12 +59,12 @@ const addGroupMember =  async (req,res, next ) => {
 
         if(!user){
 
-                throw new AppError("User not a member of the group", 403)
+                throw new AppError("User not a member of the group", 400)
         }
 
         if(user.role != "admin") {
 
-            throw new AppError("User is not an admin", 404)
+            throw new AppError("User is not an admin", 400)
 
         }  
         
@@ -73,7 +73,7 @@ const addGroupMember =  async (req,res, next ) => {
 
         if(!userToBeAdded){
             
-            throw new AppError("User to be added does not exist", 404)
+            throw new AppError("User to be added does not exist", 400)
 
         }
 

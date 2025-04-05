@@ -27,8 +27,17 @@ const userRegister = async (req,res) => {
 
         //^ generate token to smoothly login user when registered
 
+        const payload = {
+            id : newUser.id,
+            username: newUser.username
+        }
+
+
+        const token = generateToken(payload)
+
         return res.status(201).json({
             msg: "User created successfully",
+            token : token,
             user: {
                 id: newUser.id,
                 username : newUser.username,
@@ -47,6 +56,7 @@ const userRegister = async (req,res) => {
 
 }
 
+
 const userLogin = async (req,res) => {
 
     try {
@@ -59,7 +69,7 @@ const userLogin = async (req,res) => {
         
         if(!userExists){
             
-            return res.status(401).json({msg: "User does not exist"})
+            return res.status(400).json({msg: "User does not exist"})
 
         }
 
@@ -99,8 +109,33 @@ const userLogin = async (req,res) => {
 }
 
 
+const validateToken = async (req, res) => {
+    // Passport already validated the token via middleware
+
+
+    console.log("validaing")
+
+    if (!req.user) {
+        return res.status(401).json({
+            valid: false,
+            message: 'Invalid token'
+        });
+    }
+
+    return res.status(201).json({
+        valid: true,
+        user: {
+            id: req.user.id,
+            email: req.user.email,
+            username: req.user.username
+        }
+    });
+};
+
+
 
 module.exports = {
     userRegister,
-    userLogin
+    userLogin,
+    validateToken
 }

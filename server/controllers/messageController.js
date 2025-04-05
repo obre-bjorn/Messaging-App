@@ -70,7 +70,7 @@ const sendMessage = async (req,res,next) => {
 
             if(!isMember){
 
-                throw new AppError("You are not a member of this group",401)
+                throw new AppError("You are not a member of this group",400)
 
             }
 
