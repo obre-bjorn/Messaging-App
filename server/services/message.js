@@ -53,12 +53,12 @@ async function getUsersWithConversation(userId) {
         const userIds= new Set()
 
         
-
         users.forEach(message => {
-            if(message.senderId !== userId) userIds.add(message.senderId)
-            if(message.recieverId !== userId) userIds.add(message.recieverId)
-        })
-
+            if(message.senderId !== userId) userIds.add(message.senderId);
+            if(message.recieverId !== userId) userIds.add(message.recieverId);
+            })
+            
+            console.log("Users Ids: ",Array.from(userIds))
 
 
         const conversations = await prisma.message.findMany({

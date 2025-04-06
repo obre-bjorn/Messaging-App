@@ -109,7 +109,7 @@ const getConversations = async (req,res,next) => {
     const userId = parseInt(req.user.id)
 
 
-
+console.log("USER ID CHAT", userId)
     try {
 
         if(!userId){
