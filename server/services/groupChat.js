@@ -120,13 +120,36 @@ async function getGroupChats(userId) {
                 userId : userId
             },
             include : {
-                group: true
+                group :{
+                    include: {
+                        messages:{
+                            orderBy: {
+                                createdAt: "desc"
+                            },
+                            take: 1
+                        }
+                    }
+
+                }
             }
         })
 
+        
 
+        const sortedGroups = groups.sort((a,b) => {
 
-        return groups
+            if(a.group.messages[0] && b.group.messages[0]){
+
+                const aLatestMessage = a.group.messages[0].createdAt || new Date(0) 
+                const bLatestMessage = b.group.messages[0].createdAt || new Date(0)
+
+                return bLatestMessage - aLatestMessage
+            }
+            
+            return a - b
+        })
+
+        return sortedGroups
 
     } catch (error) {
         

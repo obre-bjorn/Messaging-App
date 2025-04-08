@@ -54,9 +54,14 @@ async function getUsersWithConversation(userId) {
 
         
         users.forEach(message => {
-            if(message.senderId !== userId) userIds.add(message.senderId);
-            if(message.recieverId !== userId) userIds.add(message.recieverId);
-            })
+
+
+            if(message.senderId !== userId && message.senderId !== null) userIds.add(message.senderId);
+            if(message.recieverId !== userId && message.recieverId !== null) userIds.add(message.recieverId);
+
+
+            
+        })
             
             console.log("Users Ids: ",Array.from(userIds))
 
@@ -83,6 +88,7 @@ async function getUsersWithConversation(userId) {
                 createdAt : true,
                 senderId: true,
                 recieverId: true,
+                groupId:true,
                 isRead: true,
                 sender : {
                     select: {
