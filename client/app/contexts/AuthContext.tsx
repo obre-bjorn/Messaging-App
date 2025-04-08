@@ -41,7 +41,7 @@ export function AuthProvider ({children} : AuthProviderProps){
 
         const checkAuthStatus = async () => {
 
-            console.log("Running")
+            console.log("LOading", loading)
             const token: string | null = localStorage.getItem('token')
 
             if(token == null){
@@ -61,7 +61,7 @@ export function AuthProvider ({children} : AuthProviderProps){
                     setUser(user)
                     
                 }
-
+               
                 return
 
                 
@@ -81,12 +81,14 @@ export function AuthProvider ({children} : AuthProviderProps){
 
     },[])
 
-
+    console.log("Rendered Context")
 
     const login = async ( username: string, password: string) : Promise<void> =>{
         
+        setLoading(true)
 
         try {
+        
             const {token, user} = await apiLogin(username,password)
             localStorage.setItem('token', token)
             setUser(user)
@@ -96,6 +98,9 @@ export function AuthProvider ({children} : AuthProviderProps){
         }catch (error) {
             
             throw new Error('Something went wrong')
+        }
+        finally{
+            setLoading(false)
         }
     }
 

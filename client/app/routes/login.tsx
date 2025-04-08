@@ -52,7 +52,7 @@ export default function Login() {
 
 
     
-    if (loading || isAuthenticated) {
+    if (isAuthenticated) {
         
         return <div className="loading"></div>
         
@@ -63,6 +63,8 @@ export default function Login() {
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col w-full ">
+
+                {isSubmitting && <div className="loading"></div>}
 
                 <form className="card lg:p-5 bg-base-100 w-full max-w-md shrink-0 shadow-2xl" onSubmit={handleSubmit}>
 

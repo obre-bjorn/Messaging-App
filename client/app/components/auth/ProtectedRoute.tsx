@@ -20,7 +20,7 @@ export default function ProtectedRoute({children}: ProtectedRouteProps ){
 
 
     if (loading) {
-        return <div className="loading"> </div>// or return a loading spinner
+        return <div className="loading-bars"> </div>// or return a loading spinner
     }
 
     if (!isAuthenticated) {
