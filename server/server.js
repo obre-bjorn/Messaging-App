@@ -1,4 +1,6 @@
 const express = require('express')
+const cors = require('cors')
+
 const initializePassport = require('./config/auth')
 
 
@@ -13,14 +15,14 @@ const AppError = require('./utils/AppError')
 
 const app = express()
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // or specify domains like 'https://yourdomain.com'
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
 
 initializePassport()
+
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}))
 
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())

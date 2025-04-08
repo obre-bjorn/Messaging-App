@@ -27,6 +27,7 @@ async function findGroupMember(userId, groupId) {
     }
 }
 
+
 async function createGroupChat(groupName,createdBy) {
 
     try {
@@ -45,7 +46,8 @@ async function createGroupChat(groupName,createdBy) {
 
             },
             include : {
-                members: true
+                members: true,
+                messages: true,
             }
         })
 
