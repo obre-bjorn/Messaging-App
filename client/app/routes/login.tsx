@@ -13,32 +13,31 @@ export default function Login() {
     const navigate = useNavigate()
     const {isAuthenticated,login,loading} = useAuth()
 
-    console.log("RENDERED")
     useEffect(()=> {
-
-
+        
+        
         if(isAuthenticated){
-
+            
             navigate('/',{replace: true})
-
+            
         }
-
+        
     },[isAuthenticated])
 
 
     const handleSubmit = async(e : React.FormEvent) => {
-
+        
         console.log(username, password)
-
+        
         e.preventDefault()
         setIsSubmitting(true)
         setError('')
         
         console.log("Loading: ",loading)
-
+        
         try {
             await login(username,password)
-
+            
             
         } catch (error) {
             
@@ -60,6 +59,7 @@ export default function Login() {
         null; // Or <LoadingSpinner />
     }
 
+    console.log("RENDERED")
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col w-full ">
