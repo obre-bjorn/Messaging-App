@@ -21,28 +21,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   
   const {user} = useAuth()
-  const [loading, setLoading] = useState<Boolean>(false)
-  const [chats, setChats] = useState<null | ChatDetails[]>(null)
 
-  useEffect(()=> {
-
-    const fetchChats = async() => {
-
-      setLoading(true)
-      const data = await getChats()
-      setChats(data.chats)
-
-      setLoading(false)
-
-    }
-
-    fetchChats()
-    
-  },[])
-
-
-  console.log("Is loading",loading)
-  console.log("Chats", chats)
 
   return ( <>
           

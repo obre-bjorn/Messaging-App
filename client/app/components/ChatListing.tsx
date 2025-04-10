@@ -25,7 +25,7 @@ function ChatListing({chats} : Props) {
 
     <ul className="list bg-base-100 rounded-box shadow-md">
   
-      {chats && chats.map(chat => <Chat chat={chat}/>)
+      {chats && chats.map(chat => <Chat key={chat.user.id} chat={chat}/>)
 
       }
   

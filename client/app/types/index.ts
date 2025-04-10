@@ -24,6 +24,7 @@ interface GroupMessage {
   content: string;
   createdAt: string;
   isRead: boolean;
+  sender: User;
 }
 
 interface UserMessage {
@@ -59,7 +60,7 @@ export interface GroupDetails {
   members: GroupMember[],
 }
 
-interface GroupWithMembership extends GroupMember {
+export interface GroupWithMembership extends GroupMember {
   group: GroupDetails;
 }
 

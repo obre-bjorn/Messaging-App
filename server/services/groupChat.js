@@ -128,8 +128,17 @@ async function getGroupChats(userId) {
                             orderBy: {
                                 createdAt: "desc"
                             },
+                            include: {
+                                sender: {
+                                    select: {
+                                        id: true,
+                                        username: true
+                                    }
+                                }
+                            },
                             take: 1
-                        }
+                        },
+                        
                     }
 
                 }
@@ -158,8 +167,6 @@ async function getGroupChats(userId) {
         console.log(error)
         throw new Error("Failed to get groups")
     }
-
-
 
 
 } 
