@@ -1,4 +1,5 @@
 import { type ChatDetails } from "~/types"
+import Chat from "./Chat"
 
 
 interface Props {
@@ -11,16 +12,24 @@ function ChatListing({chats} : Props) {
   
   return (
 
-    <div>
-      {chats && chats.map((chat)=> {
+    // <div>
+    //   {chats && chats.map((chat)=> {
             
-            return (<div key ={chat.user.id}>
-              <h1>{chat.user.username}</h1>
-              <h3>{chat.lastMessage.content}</h3>
-            </div>)
-          })}
+    //         return (<div key ={chat.user.id}>
+    //           <h1>{chat.user.username}</h1>
+    //           <h3>{chat.lastMessage.content}</h3>
+    //         </div>)
+    //       })}
 
-    </div>
+    // </div>
+
+    <ul className="list bg-base-100 rounded-box shadow-md">
+  
+      {chats && chats.map(chat => <Chat chat={chat}/>)
+
+      }
+  
+    </ul>
   )
 }
 

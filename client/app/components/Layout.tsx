@@ -9,7 +9,7 @@ function Layout() {
 
         <NavBar/>
 
-        <div className="hidden md:block w-80 bg-slate-800 font-bold text-2xl p-3">
+        <div className="hidden md:block w-100 bg-slate-800 font-bold text-2xl p-3">
             <Outlet/>
         </div>
 

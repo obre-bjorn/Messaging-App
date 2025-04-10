@@ -30,7 +30,7 @@ const [chats, setChats] = useState<null | ChatDetails[]>(null)
     return (
 
         <>
-            <h1>Chats</h1>
+            <div className="m-4 border-b-2">Chats</div>
 
             {loading && <div className="loading"></div>}
 
