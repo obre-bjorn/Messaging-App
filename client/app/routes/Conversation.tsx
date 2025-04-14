@@ -1,30 +1,52 @@
-import { Outlet } from "react-router"
-import NavBar from "../components/NavBar"
-import type { Route } from "../+types/root";
+import { useEffect,useState } from "react"
+import { useParams } from "react-router"
+import { getChatMessages } from "~/services/messageService"
+import type { ChatDetails, UserMessage } from "~/types"
 
+interface Props{
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "👥ChatApp" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
 }
 
-function Layout() {
+function Conversation({} : Props) {
   
+  const {chatId} = useParams<{chatId : string | undefined}>()  
+  const [loading, setLoading] = useState(false)
+  const [messages,setMessages] = useState<null | UserMessage[] >(null)  
 
+
+  useEffect(()=> {
+
+
+    const fetchChatMessages= async () => {
+
+      if(!chatId) return 
+
+        setLoading(true)
+        
+        const data = await getChatMessages(chatId)
+        setMessages(data.messages) 
+
+        setLoading(false)
+
+
+    }
+
+
+    fetchChatMessages()
+
+  },[chatId])
+
+  console.log("Messages", messages)
 
   return (
-      <div className="flex flex-col md:flex-row h-screen w-full">
+        <>
 
-          <NavBar/>
+        <div className="flex-1 bg--400 pb-16 md:pb-0">
+                {/* Conversation content goes here */}
+            <div className="h-full flex flex-col">
+                  
 
-          {/* This should show the chat list and grouplist based on what selected on th navbar */}
-          <Outlet/>
-
-
-        
-         {/* <div className="h-16 bg-slate-900 p-4">Chat Header</div>
+          <div className="h-16 bg-slate-900 p-4">Chat Header</div>
 
 
           <div className="flex-1 p-4">
@@ -64,10 +86,14 @@ function Layout() {
                   
                   
                   
-          <div className="h-20 bg-slate-900 p-4">Input</div> */}
+          <div className="h-20 bg-slate-900 p-4">Input</div>
 
-      </div>
-   )
+            </div>
+         </div>
+
+          
+        </>
+  )
 }
 
-export default Layout
+export default Conversation

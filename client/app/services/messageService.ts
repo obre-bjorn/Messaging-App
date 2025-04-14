@@ -1,5 +1,5 @@
 import api from "./api";
-import type { UserChatsResponse } from "~/types";
+import { type ChatMessagesResponse, type UserChatsResponse } from "~/types";
 
 
 export const getChats = async (): Promise <UserChatsResponse> => {
@@ -18,4 +18,20 @@ export const getChats = async (): Promise <UserChatsResponse> => {
 
 }
 
+
+export const getChatMessages = async (chatId:string): Promise <ChatMessagesResponse> => {
+
+    try {
+        
+        const response = await api.get<ChatMessagesResponse>(`/messages/${chatId}`)
+        return response.data
+
+    } catch (error) {
+        
+        throw new Error("Failed to get chat messages")
+
+    }
+
+
+}
 

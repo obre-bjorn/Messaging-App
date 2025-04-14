@@ -12,24 +12,17 @@ function ChatListing({chats} : Props) {
   
   return (
 
-    // <div>
-    //   {chats && chats.map((chat)=> {
-            
-    //         return (<div key ={chat.user.id}>
-    //           <h1>{chat.user.username}</h1>
-    //           <h3>{chat.lastMessage.content}</h3>
-    //         </div>)
-    //       })}
+    <>
+    
+      <ul className="list bg-base-100 rounded-box shadow-md">
+    
+        {chats && chats.map(chat => <Chat key={chat.user.id} chat={chat}/>)
 
-    // </div>
-
-    <ul className="list bg-base-100 rounded-box shadow-md">
-  
-      {chats && chats.map(chat => <Chat key={chat.user.id} chat={chat}/>)
-
-      }
-  
-    </ul>
+        }
+    
+      </ul>
+    
+    </>
   )
 }
 

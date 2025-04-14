@@ -27,7 +27,7 @@ interface GroupMessage {
   sender: User;
 }
 
-interface UserMessage {
+export interface UserMessage {
   id: number;
   senderId: UserDetails
   receiverId: UserDetails
@@ -85,3 +85,10 @@ export interface UserChatsResponse {
     msg : string,
     chats : ChatDetails[]
 }
+
+
+export interface ChatMessagesResponse{
+  msg: "string",
+  messages: UserMessage[]
+}
+

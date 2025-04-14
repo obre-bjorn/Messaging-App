@@ -25,7 +25,7 @@ function NavBar() {
 
         <div id="navigations" className="flex flex-col justify-between items-center w-full">
 
-          <NavLink to="/chats" className=" py-6 text-center hover:bg-accent w-full">
+          <NavLink to="/" className=" py-6 text-center hover:bg-accent w-full">
             <FontAwesomeIcon icon={"fa-solid fa-message" as IconProp} className="text-2xl "/>
           </NavLink>    
 

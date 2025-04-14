@@ -30,15 +30,15 @@ function Groups() {
 
     }, []);
 
-  return (
-    <>
-            <div className="m-4 border-b-2">Chats</div>
+    return (
+        <>
+            <div className="m-4 border-b-2">GroupChats</div>
 
             {loading && <div className="loading"></div>}
 
             {groups && <GroupListing groups={groups}/> } 
         </>
-  )
+    )
 }
 
 export default Groups
