@@ -37,12 +37,26 @@ export interface UserMessage {
   isRead: boolean;
 }
 
+export interface Message{
 
-interface UserDetails {
+   id: number;
+  senderId: number;
+  receiverId: number
+  groupId: null;
+  content: string;
+  createdAt: string;
+  isRead: boolean;
+  sender : UserDetails,
+  reciever: UserDetails
+
+}
+
+export interface UserDetails {
 
     id: number,
     username: string,
-    profile_picture: string | null
+    profile_picture: string | null,
+    lastseen: string
 }
 
 
@@ -89,6 +103,8 @@ export interface UserChatsResponse {
 
 export interface ChatMessagesResponse{
   msg: "string",
-  messages: UserMessage[]
+  friend: UserDetails
+  messages: Message[]
+  
 }
 

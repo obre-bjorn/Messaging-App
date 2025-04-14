@@ -165,11 +165,12 @@ const getMessagesBtwnUsers = async (req,res,next) => {
         }
 
 
-        const messages = await messageQueries.getUserMessages(userId,friendId)
+        const data = await messageQueries.getUserMessages(userId,friendId)
 
         return res.status(200).json({
             msg: "Messages fetched successfully",
-            messages : messages
+            friend: data.friend,
+            messages : data.messages
         })
 
 

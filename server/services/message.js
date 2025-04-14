@@ -176,13 +176,41 @@ async function getUserMessages(userId, friendId){
             },
             orderBy : {
                 createdAt: 'asc'
+            },
+            include :{
+                sender : {
+                    select : {
+                        username : true,
+                        id : true,
+                        lastseen : true,
+                        profile_picture: true
+                    }
+                },
+                reciever: {
+                    select : {
+                        username : true,
+                        id : true,
+                        lastseen : true,
+                        profile_picture: true
+                    }
             }
 
-        })
+    }
+})
+    const friend = await prisma.user.findUnique({
+        where: {
+            id: friendId,
+        },
+        select: {
+            id: true,
+            username: true,
+            lastseen: true,
+            profile_picture: true,
+        },
+    });
 
 
-
-        return messages
+        return {messages,friend}
 
 
     } catch (error) {
