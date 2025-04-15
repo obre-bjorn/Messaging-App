@@ -1,5 +1,5 @@
 import api from "./api";
-import { type ChatMessagesResponse, type UserChatsResponse } from "~/types";
+import type {  ChatMessagesResponse,  UserChatsResponse,  MessageResponse } from "~/types";
 
 
 export const getChats = async (): Promise <UserChatsResponse> => {
@@ -35,3 +35,24 @@ export const getChatMessages = async (chatId:string): Promise <ChatMessagesRespo
 
 }
 
+
+export const sendMessage = async (message: string, friendId : string):  Promise <MessageResponse> => { 
+
+
+    try {
+        
+        const response = await api.post<MessageResponse>(`send_message`,{
+            friendId: friendId,
+            message : message,
+        } )
+
+        return response.data
+
+
+    } catch (error) {
+        
+        throw new Error("Failed to send message")
+
+    }
+
+}

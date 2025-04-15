@@ -13,7 +13,12 @@ async function sendMessage(senderId,recieverId,content, groupId=null) {
                 recieverId: recieverId,
                 content: content,
                 groupId : groupId
+            },
+            include: {
+                sender: true,
+                reciever: true
             }
+
         })
 
         return message

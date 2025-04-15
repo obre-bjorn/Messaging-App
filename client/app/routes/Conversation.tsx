@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react"
 import { useParams } from "react-router"
 import MessageListing from "~/components/MessageListing"
+import SendTextForm from "~/components/SendTextForm"
 import { useAuth } from "~/contexts/AuthContext"
 import { getChatMessages } from "~/services/messageService"
 import { type UserDetails, type Message } from "~/types"
@@ -15,7 +16,7 @@ function Conversation({} : Props) {
   const {chatId} = useParams<{chatId : string | undefined}>()  
   const [loading, setLoading] = useState(false)
   const [friend, setFriend] = useState<null| UserDetails>(null)
-  const [messages,setMessages] = useState<null | Message[] >(null)  
+  const [messages,setMessages] = useState<[] | Message[] >([])  
 
 
   useEffect(()=> {
@@ -40,6 +41,14 @@ function Conversation({} : Props) {
 
   },[chatId])
 
+
+  const addMessage = (message: Message) => {
+    
+    setMessages(prevMessages => [...prevMessages,message])
+
+
+  }
+
   console.log("Messages", messages)
 
   return (
@@ -58,20 +67,26 @@ function Conversation({} : Props) {
               {friend?.username}
             </div>
           </div>
+          <div className="flex-1 p-4">
 
-          {loading && <div className="loading"></div>}
-          {messages && <MessageListing messages={messages}/> }
+            {loading && <div className="loading "></div>}
+            {messages && <MessageListing messages={messages}/> }
+
+          </div>
                   
                   
                   
-          <div className="h-20 bg-slate-900 p-4">Input</div>
+          <div id="form_container" className="h-20 bg-slate-900 p-4 w-full">
+              <SendTextForm appendMessageUI={addMessage} friendId= {chatId}/>
+          </div>
 
-            </div>
-         </div>
 
-          
+
+          </div>
+        </div>  
         </>
   )
 }
+
 
 export default Conversation

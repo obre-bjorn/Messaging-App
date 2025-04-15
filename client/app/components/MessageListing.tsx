@@ -11,11 +11,13 @@ function MessageListing({messages} : Props ) {
 
   return (
 
-    <div className="flex-1 p-4">
-              {/* {Messages} */}
-              {messages.map(message => <MessageItem key={message.id}  message={message}/>)}
-          </div>
     
+      <>
+      
+        {/* {Messages} */}
+        {messages.map(message => <MessageItem key={message.id}  message={message}/>)}
+    
+      </>
   )
   
 }

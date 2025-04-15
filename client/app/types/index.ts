@@ -39,7 +39,7 @@ export interface UserMessage {
 
 export interface Message{
 
-   id: number;
+  id: number;
   senderId: number;
   receiverId: number
   groupId: null;
@@ -79,6 +79,7 @@ export interface GroupWithMembership extends GroupMember {
 }
 
 
+// Response types
 export interface GroupsChatsResponse {
   success?: boolean;
   msg: string;
@@ -102,9 +103,15 @@ export interface UserChatsResponse {
 
 
 export interface ChatMessagesResponse{
-  msg: "string",
+  msg: string,
   friend: UserDetails
   messages: Message[]
   
 }
 
+export interface MessageResponse {
+  success: string,
+  msg : string,
+  message: Message,
+
+}
